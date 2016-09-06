@@ -13,7 +13,7 @@ namespace Bridge.Redux
 
         [Name("dispatch")]
         public extern void Dispatch<TActionType>(IReduxAction<TActionType> action);
-
+  
         [Name("dispatch")]
         public extern void Dispatch<TActionType>(Action<Action<IReduxAction<TActionType>>> dispatch);
 
