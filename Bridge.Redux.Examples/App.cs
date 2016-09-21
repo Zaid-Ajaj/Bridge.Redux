@@ -1,7 +1,6 @@
-﻿using Bridge.Html5;
+﻿
+using Bridge.Html5;
 using System;
-
-using Bridge.Redux.Examples.Basic;
 
 namespace Bridge.Redux.Examples
 {
@@ -9,8 +8,27 @@ namespace Bridge.Redux.Examples
     {
         public static void Main()
         {
-            // BasicApp.Initialize();
-            ReactTodoApp.Init();
+            var appReducer = Reducers.ItemsReducer();
+            var initialState = new TodoItem[] { };
+            var store = Redux.CreateStore(appReducer, initialState);
+
+            Action render = () =>
+            {
+                var todoList = Components.TodoList(new TodoListProps
+                {
+                    Todos = store.GetState(),
+                    AddTodo = text => store.Dispatch(Actions.AddTodo(text)),
+                    ToggleTodo = id => store.Dispatch(Actions.ToggleTodo(id))
+                });
+
+                var appContainer = Document.GetElementById("app");
+
+                React.React.Render(todoList, appContainer);
+            };
+
+            store.Subscribe(render);
+
+            render();
         }
     }
 }

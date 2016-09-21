@@ -42,10 +42,7 @@
     <Compile Include="Basic\Reducers\CounterReducer.cs" />
     <Compile Include="Basic\Reducers\UserReducer.cs" />
     <Compile Include="React\Actions.cs" />
-    <Compile Include="React\Bindings.cs" />
     <Compile Include="React\Components.cs" />
-    <Compile Include="React\Containers.cs" />
-    <Compile Include="React\Main.cs" />
     <Compile Include="React\Models.cs" />
     <Compile Include="React\Reducers.cs" />
     <Compile Include="React\Styles.cs" />

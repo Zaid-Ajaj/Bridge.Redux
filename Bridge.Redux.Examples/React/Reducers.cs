@@ -11,14 +11,15 @@ namespace Bridge.Redux.Examples
             {
                 if (action.Type == ActionTypes.AddTodo)
                 {
+                    var id = state.Count() + 1;
                     var todo = new TodoItem
                     {
-                        Id = state.Count() + 1,
+                        Id = id,
                         IsDone = false,
-                        Text = action.TodoText
+                        Text = $"{action.TodoText} #{id}"
                     };
 
-                    return state.Concat(new TodoItem[] { todo  });
+                    return state.Concat(new TodoItem[] { todo });
                 }
                 else if (action.Type == ActionTypes.ToggleTodo)
                 {
@@ -26,8 +27,12 @@ namespace Bridge.Redux.Examples
                     {
                         if (todo.Id == action.TodoId)
                         {
-                            todo.IsDone = !todo.IsDone;
-                            return todo;
+                            return new TodoItem
+                            {
+                                Id = todo.Id,
+                                IsDone = !todo.IsDone,
+                                Text = todo.Text
+                            };
                         }
                         else
                         {

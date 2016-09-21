@@ -23032,6 +23032,100 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
 
 })(this);
 
+Bridge.assembly("Bridge.Redux", function ($asm, globals) {
+    "use strict";
+
+    Bridge.define("Bridge.Redux.Extensions", {
+        statics: {
+            isUndefined: function (T, value) {
+                return value === undefined;
+            },
+            mergeWith: function (T, value, otherValue) {
+                var result = { };
+            
+                for (var key in value) { 
+                    if (typeof value[key] === 'function') {
+                        continue;
+                    }
+                
+                    result[key] = value[key];
+            
+                }
+               for (var key in otherValue) { 
+                    if (typeof otherValue[key] === 'function') {
+                        continue;
+                    }
+                
+                    result[key] = otherValue[key];
+            
+                }
+             
+                return result;
+            }
+        }
+    });
+
+    Bridge.definei("Bridge.Redux.IReduxAction$1", {
+        $kind: "interface"
+    });
+
+    Bridge.define("Bridge.Redux.Middleware", {
+        statics: {
+            thunk: null,
+            config: {
+                init: function () {
+                    this.thunk = Bridge.Redux.Middleware.from(Object, $_.Bridge.Redux.Middleware.f1);
+                }
+            },
+            from: function (TState, func) {
+                var middleware = function (store) {
+                    return function (next) {
+                        return function (action) {
+                            func(store, next, action);
+                        };
+                    };
+                };
+
+                return middleware;
+            }
+        }
+    });
+
+    var $_ = {};
+
+    Bridge.ns("Bridge.Redux.Middleware", $_);
+
+    Bridge.apply($_.Bridge.Redux.Middleware, {
+        f1: function (store, next, action) {
+        
+                if (typeof action === 'function') { 
+                    return action(store.dispatch, store.getState);
+                }
+
+                next(action);
+
+             
+        }
+    });
+
+    Bridge.define("Bridge.Redux.Reducer$1", {
+        statics: {
+            create: function (reducer) {
+                return reducer;
+            },
+            create$1: function (reducer) {
+                return reducer;
+            },
+            op_Implicit: function (reducer) {
+                return reducer;
+            }
+        },
+        ctor: function () {
+            this.$initialize();
+        }
+    });
+});
+
 Bridge.assembly("Bridge.React", function ($asm, globals) {
     "use strict";
 
@@ -24315,100 +24409,6 @@ Bridge.assembly("Bridge.React", function ($asm, globals) {
     });
 });
 
-Bridge.assembly("Bridge.Redux", function ($asm, globals) {
-    "use strict";
-
-    Bridge.define("Bridge.Redux.Extensions", {
-        statics: {
-            isUndefined: function (T, value) {
-                return value === undefined;
-            },
-            mergeWith: function (T, value, otherValue) {
-                var result = { };
-            
-                for (var key in value) { 
-                    if (typeof value[key] === 'function') {
-                        continue;
-                    }
-                
-                    result[key] = value[key];
-            
-                }
-               for (var key in otherValue) { 
-                    if (typeof otherValue[key] === 'function') {
-                        continue;
-                    }
-                
-                    result[key] = otherValue[key];
-            
-                }
-             
-                return result;
-            }
-        }
-    });
-
-    Bridge.definei("Bridge.Redux.IReduxAction$1", {
-        $kind: "interface"
-    });
-
-    Bridge.define("Bridge.Redux.Middleware", {
-        statics: {
-            thunk: null,
-            config: {
-                init: function () {
-                    this.thunk = Bridge.Redux.Middleware.from(Object, $_.Bridge.Redux.Middleware.f1);
-                }
-            },
-            from: function (TState, func) {
-                var middleware = function (store) {
-                    return function (next) {
-                        return function (action) {
-                            func(store, next, action);
-                        };
-                    };
-                };
-
-                return middleware;
-            }
-        }
-    });
-
-    var $_ = {};
-
-    Bridge.ns("Bridge.Redux.Middleware", $_);
-
-    Bridge.apply($_.Bridge.Redux.Middleware, {
-        f1: function (store, next, action) {
-        
-                if (typeof action === 'function') { 
-                    return action(store.dispatch, store.getState);
-                }
-
-                next(action);
-
-             
-        }
-    });
-
-    Bridge.define("Bridge.Redux.Reducer$1", {
-        statics: {
-            create: function (reducer) {
-                return reducer;
-            },
-            create$1: function (reducer) {
-                return reducer;
-            },
-            op_Implicit: function (reducer) {
-                return reducer;
-            }
-        },
-        ctor: function () {
-            this.$initialize();
-        }
-    });
-});
-
 Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
     "use strict";
 
@@ -24433,8 +24433,25 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
 
     Bridge.define("Bridge.Redux.Examples.App", {
         $main: function () {
-            // BasicApp.Initialize();
-            Bridge.Redux.Examples.ReactTodoApp.init();
+            var appReducer = Bridge.Redux.Examples.Reducers.itemsReducer();
+            var initialState = [];
+            var store = Redux.createStore(appReducer, initialState);
+
+            var render = function () {
+                var todoList = Bridge.Redux.Examples.Components.todoList({ todos: store.getState(), addTodo: function (text) {
+                    store.dispatch(Bridge.Redux.Examples.Actions.addTodo(text));
+                }, toggleTodo: function (id) {
+                    store.dispatch(Bridge.Redux.Examples.Actions.toggleTodo(id));
+                } });
+
+                var appContainer = document.getElementById("app");
+
+                ReactDOM.render(todoList, appContainer);
+            };
+
+            store.subscribe(render);
+
+            render();
         }
     });
 
@@ -24648,11 +24665,7 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
     Bridge.define("Bridge.Redux.Examples.ReactTodoApp", {
         statics: {
             init: function () {
-                var appReducer = Bridge.Redux.Examples.Reducers.itemsReducer();
-                var initialState = [];
-                var store = Redux.createStore(appReducer, initialState);
 
-                ReactDOM.render(Bridge.Redux.Examples.ReactRedux.provider(System.Collections.Generic.IEnumerable$1(Object), store, Bridge.Redux.Examples.Containers.todoApp()), document.getElementById("app"));
             }
         }
     });
@@ -24670,14 +24683,14 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
     Bridge.apply($_.Bridge.Redux.Examples.Reducers, {
         f1: function (state, action) {
             if (action.type === Bridge.Redux.Examples.ActionTypes.AddTodo) {
-                var todo = { id: ((System.Linq.Enumerable.from(state).count() + 1) | 0), isDone: false, text: action.todoText };
+                var id = (System.Linq.Enumerable.from(state).count() + 1) | 0;
+                var todo = { id: id, isDone: false, text: System.String.format("{0} #{1}", action.todoText, id) };
 
                 return System.Linq.Enumerable.from(state).concat([todo]);
             } else if (action.type === Bridge.Redux.Examples.ActionTypes.ToggleTodo) {
                 return System.Linq.Enumerable.from(state).select(function (todo1) {
                     if (todo1.id === action.todoId) {
-                        todo1.isDone = !todo1.isDone;
-                        return todo1;
+                        return { id: todo1.id, isDone: !todo1.isDone, text: todo1.text };
                     } else {
                         return todo1;
                     }
