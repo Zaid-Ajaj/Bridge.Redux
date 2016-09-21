@@ -1,4 +1,4 @@
-﻿namespace Bridge.Redux.Examples
+﻿namespace Bridge.Redux.Examples.Basic
 {
     public static partial class Reducers
     {

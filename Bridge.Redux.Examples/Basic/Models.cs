@@ -1,4 +1,4 @@
-﻿namespace Bridge.Redux.Examples
+﻿namespace Bridge.Redux.Examples.Basic
 {
     [ObjectLiteral]
     public class AppState
@@ -28,7 +28,6 @@
         SetAge
     }
 
-    [ObjectLiteral]
     public class SimpleAction : IReduxAction<ActionTypes>
     {
         public ActionTypes Type { get; set; }
