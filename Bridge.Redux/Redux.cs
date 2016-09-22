@@ -10,12 +10,6 @@ namespace Bridge.Redux
     [External]
     public static class Redux
     {
-        //[Name("createStore")]
-        //public static extern Store<TState> CreateStore<TState, T, TActionType>(Func<TState, T, TState> reducer, TState initialValue) where T : ReduxAction<TActionType>;
-        //[Name("createStore")]
-        //public static extern Store<TState> CreateStore<TState, T, TActionType>(Func<TState, T, TState> reducer, StoreMiddleware middleware) where T : ReduxAction<TActionType>;
-        //[Name("createStore")]
-        //public static extern Store<TState> CreateStore<TState, T, TActionType>(Func<TState, T, TState> reducer, TState initialState, StoreMiddleware middleware) where T : ReduxAction<TActionType>;
         [Name("createStore")]
         public static extern Store<TState> CreateStore<TState>(ReduxReducer<TState> reducer);
         [Name("createStore")]

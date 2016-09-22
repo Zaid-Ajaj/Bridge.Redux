@@ -1,4 +1,5 @@
-﻿using Bridge.React;
+﻿using Bridge.Html5;
+using Bridge.React;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Bridge.Redux.Examples
                 return DOM.Div(attrs, todoItem.Text);
             };
 
+           
+
             return StaticComponent.Stateless(renderer, item);
         }
 
@@ -27,7 +30,7 @@ namespace Bridge.Redux.Examples
                        (new Attributes { },
                            DOM.Input(new InputAttributes
                            {
-                               Type = Html5.InputType.Text,
+                               Type = InputType.Text,
                                Placeholder = "Add todo",
                                OnKeyDown = e =>
                                {

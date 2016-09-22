@@ -23104,14 +23104,8 @@ Bridge.assembly("Bridge.Redux", function ($asm, globals) {
         }
     });
 
-    Bridge.define("Bridge.Redux.Reducer$1", {
+    Bridge.define("Bridge.Redux.ReduxReducer$1", {
         statics: {
-            create: function (reducer) {
-                return reducer;
-            },
-            create$1: function (reducer) {
-                return reducer;
-            },
             op_Implicit: function (reducer) {
                 return reducer;
             }
@@ -23121,7 +23115,7 @@ Bridge.assembly("Bridge.Redux", function ($asm, globals) {
         }
     });
 
-    Bridge.define("Bridge.Redux.Reducers", {
+    Bridge.define("Bridge.Redux.ReduxReducers", {
         statics: {
             create: function (reducer) {
                 return reducer;
@@ -24492,7 +24486,7 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
                 }
             },
             itemsReducer: function () {
-                return Bridge.Redux.Reducers.create$1(Bridge.Redux.Examples.AppReducers.itemsReducer$1);
+                return Bridge.Redux.ReduxReducers.create$1(Bridge.Redux.Examples.AppReducers.itemsReducer$1);
             }
         }
     });
@@ -24527,7 +24521,7 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
     Bridge.define("Bridge.Redux.Examples.Basic.BasicApp", {
         statics: {
             initialize: function () {
-                var appReducer = Redux.combineReducers({ user: Bridge.Redux.Reducer$1.op_Implicit(Bridge.Redux.Examples.Basic.Reducers.userReducer()), counter: Bridge.Redux.Reducer$1.op_Implicit(Bridge.Redux.Examples.Basic.Reducers.counterReducer()) });
+                var appReducer = Redux.combineReducers({ user: Bridge.Redux.ReduxReducer$1.op_Implicit(Bridge.Redux.Examples.Basic.Reducers.userReducer()), counter: Bridge.Redux.ReduxReducer$1.op_Implicit(Bridge.Redux.Examples.Basic.Reducers.counterReducer()) });
 
                 var middleware = Redux.applyMiddleware(Bridge.Redux.Middleware.thunk);
 
@@ -24574,10 +24568,10 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
     Bridge.define("Bridge.Redux.Examples.Basic.Reducers", {
         statics: {
             counterReducer: function () {
-                return Bridge.Redux.Reducer$1.create$1($_.Bridge.Redux.Examples.Basic.Reducers.f1);
+                return Bridge.Redux.ReduxReducers.create$1($_.Bridge.Redux.Examples.Basic.Reducers.f1);
             },
             userReducer: function () {
-                return Bridge.Redux.Reducer$1.create$1($_.Bridge.Redux.Examples.Basic.Reducers.f2);
+                return Bridge.Redux.ReduxReducers.create$1($_.Bridge.Redux.Examples.Basic.Reducers.f2);
             }
         }
     });
@@ -24621,6 +24615,8 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
         statics: {
             todo: function (item) {
                 var renderer = $_.Bridge.Redux.Examples.Components.f1;
+
+
 
                 return Bridge.React.StaticComponent.stateless(Object, renderer, item);
             },

@@ -2,15 +2,18 @@
 {
     public class Actions
     {
-        public static SimpleAction AddTodo(string text)
+        public static SimpleAction AddTodo(string text) => new SimpleAction
         {
-            return new SimpleAction { Type = ActionTypes.AddTodo, TodoText = text };
-        }
+            Type = ActionTypes.AddTodo,
+            TodoText = text
+        };
+        
 
-        public static SimpleAction ToggleTodo(int id)
+        public static SimpleAction ToggleTodo(int id) => new SimpleAction
         {
-            return new SimpleAction { Type = ActionTypes.ToggleTodo, TodoId = id };
-        }
+            Type = ActionTypes.ToggleTodo,
+            TodoId = id
+        };
     }
 
 
