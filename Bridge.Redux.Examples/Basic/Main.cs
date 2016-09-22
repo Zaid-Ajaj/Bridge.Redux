@@ -19,6 +19,7 @@ namespace Bridge.Redux.Examples.Basic
 
             store.Subscribe(() => Console.WriteLine(store.GetState()));
 
+
             store.Dispatch(Actions.Increment());
             store.Dispatch(Actions.Increment());
             store.Dispatch(Actions.Decrement());

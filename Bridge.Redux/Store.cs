@@ -12,15 +12,15 @@ namespace Bridge.Redux
         public extern void Subscribe(Action action);
 
         [Name("dispatch")]
-        public extern void Dispatch<TActionType>(IReduxAction<TActionType> action);
+        public extern void Dispatch<TActionType>(ReduxAction<TActionType> action);
 
         [Name("dispatch")]
-        public extern void Dispatch<T>(T action);
+        public extern void Dispatch<T, TActionType>(T action) where T : ReduxAction<TActionType>;
 
         [Name("dispatch")]
-        public extern void Dispatch<TActionType>(Action<Action<IReduxAction<TActionType>>> dispatch);
+        public extern void Dispatch<TActionType>(Action<Action<ReduxAction<TActionType>>> dispatch);
 
         [Name("dispatch")]
-        public extern void Dispatch<TActionType>(Action<Action<IReduxAction<TActionType>>, Func<TState>> dipatch);
+        public extern void Dispatch<TActionType>(Action<Action<ReduxAction<TActionType>>, Func<TState>> dipatch);
     }
 }

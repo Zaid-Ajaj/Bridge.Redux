@@ -23065,10 +23065,6 @@ Bridge.assembly("Bridge.Redux", function ($asm, globals) {
         }
     });
 
-    Bridge.definei("Bridge.Redux.IReduxAction$1", {
-        $kind: "interface"
-    });
-
     Bridge.define("Bridge.Redux.Middleware", {
         statics: {
             thunk: null,
@@ -23122,6 +23118,17 @@ Bridge.assembly("Bridge.Redux", function ($asm, globals) {
         },
         ctor: function () {
             this.$initialize();
+        }
+    });
+
+    Bridge.define("Bridge.Redux.Reducers", {
+        statics: {
+            create: function (reducer) {
+                return reducer;
+            },
+            create$1: function (reducer) {
+                return reducer;
+            }
         }
     });
 });
@@ -24433,51 +24440,76 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
 
     Bridge.define("Bridge.Redux.Examples.App", {
         $main: function () {
-            var appReducer = Bridge.Redux.Examples.Reducers.itemsReducer();
+            var appReducer = Bridge.Redux.Examples.AppReducers.itemsReducer();
+
             var initialState = [];
             var store = Redux.createStore(appReducer, initialState);
 
-            var render = function () {
-                var todoList = Bridge.Redux.Examples.Components.todoList({ todos: store.getState(), addTodo: function (text) {
-                    store.dispatch(Bridge.Redux.Examples.Actions.addTodo(text));
-                }, toggleTodo: function (id) {
-                    store.dispatch(Bridge.Redux.Examples.Actions.toggleTodo(id));
-                } });
+            var todoListContainer = Bridge.Redux.Examples.ReduxContainers.create(System.Collections.Generic.IEnumerable$1(Object), System.Collections.Generic.IEnumerable$1(Object), Bridge.merge(new (Bridge.Redux.Examples.ContainerProps$2(System.Collections.Generic.IEnumerable$1(Object),System.Collections.Generic.IEnumerable$1(Object)))(), {
+                setStore: store,
+                setStateToPropsMapper: $_.Bridge.Redux.Examples.App.f1,
+                setRenderer: function (props) {
+                    return Bridge.Redux.Examples.Components.todoList({ todos: props, addTodo: function (text) {
+                        store.dispatch(Bridge.Redux.Examples.Actions.addTodo(text));
+                    }, toggleTodo: function (id) {
+                        store.dispatch(Bridge.Redux.Examples.Actions.toggleTodo(id));
+                    } });
+                }
+            } ));
 
-                var appContainer = document.getElementById("app");
+            ReactDOM.render(Bridge.React.Component$2(Bridge.Redux.Examples.ContainerProps$2(System.Collections.Generic.IEnumerable$1(Object),System.Collections.Generic.IEnumerable$1(Object)),System.Collections.Generic.IEnumerable$1(Object)).op_Implicit$1(todoListContainer), document.getElementById("app"));
+        }
+    });
 
-                ReactDOM.render(todoList, appContainer);
-            };
+    var $_ = {};
 
-            store.subscribe(render);
+    Bridge.ns("Bridge.Redux.Examples.App", $_);
 
-            render();
+    Bridge.apply($_.Bridge.Redux.Examples.App, {
+        f1: function (state) {
+            return state;
+        }
+    });
+
+    Bridge.define("Bridge.Redux.Examples.AppReducers", {
+        statics: {
+            itemsReducer$1: function (state, action) {
+                if (action.type === Bridge.Redux.Examples.ActionTypes.AddTodo) {
+                    var id = (System.Linq.Enumerable.from(state).count() + 1) | 0;
+                    var todo = { id: id, isDone: false, text: System.String.format("{0} #{1}", action.todoText, id) };
+
+                    return System.Linq.Enumerable.from(state).concat([todo]);
+                } else if (action.type === Bridge.Redux.Examples.ActionTypes.ToggleTodo) {
+                    return System.Linq.Enumerable.from(state).select(function (todo1) {
+                        if (todo1.id === action.todoId) {
+                            return { id: todo1.id, isDone: !todo1.isDone, text: todo1.text };
+                        } else {
+                            return todo1;
+                        }
+                    });
+                } else {
+                    return state;
+                }
+            },
+            itemsReducer: function () {
+                return Bridge.Redux.Reducers.create$1(Bridge.Redux.Examples.AppReducers.itemsReducer$1);
+            }
         }
     });
 
     Bridge.define("Bridge.Redux.Examples.Basic.Actions", {
         statics: {
             increment: function () {
-                return Bridge.merge(new Bridge.Redux.Examples.Basic.SimpleAction(), {
-                    setType: Bridge.Redux.Examples.Basic.ActionTypes.Increment
-                } );
+                return { type: Bridge.Redux.Examples.Basic.ActionTypes.Increment };
             },
             decrement: function () {
-                return Bridge.merge(new Bridge.Redux.Examples.Basic.SimpleAction(), {
-                    setType: Bridge.Redux.Examples.Basic.ActionTypes.Decrement
-                } );
+                return { type: Bridge.Redux.Examples.Basic.ActionTypes.Decrement };
             },
             setUserName: function (name) {
-                return Bridge.merge(new Bridge.Redux.Examples.Basic.SimpleAction(), {
-                    setType: Bridge.Redux.Examples.Basic.ActionTypes.SetName,
-                    setName: name
-                } );
+                return { type: Bridge.Redux.Examples.Basic.ActionTypes.SetName, name: name };
             },
             setUserAge: function (age) {
-                return Bridge.merge(new Bridge.Redux.Examples.Basic.SimpleAction(), {
-                    setType: Bridge.Redux.Examples.Basic.ActionTypes.SetAge,
-                    setAge: age
-                } );
+                return { type: Bridge.Redux.Examples.Basic.ActionTypes.SetAge, age: age };
             }
         }
     });
@@ -24505,6 +24537,7 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
                     Bridge.Console.log(store.getState());
                 });
 
+
                 store.dispatch(Bridge.Redux.Examples.Basic.Actions.increment());
                 store.dispatch(Bridge.Redux.Examples.Basic.Actions.increment());
                 store.dispatch(Bridge.Redux.Examples.Basic.Actions.decrement());
@@ -24517,8 +24550,6 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
             }
         }
     });
-
-    var $_ = {};
 
     Bridge.ns("Bridge.Redux.Examples.Basic.BasicApp", $_);
 
@@ -24559,11 +24590,11 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
                 return { value: 0 };
             }
 
-            if (action.getType() === Bridge.Redux.Examples.Basic.ActionTypes.Increment) {
+            if (action.type === Bridge.Redux.Examples.Basic.ActionTypes.Increment) {
                 return { value: ((state.value + 1) | 0) };
             }
 
-            if (action.getType() === Bridge.Redux.Examples.Basic.ActionTypes.Decrement) {
+            if (action.type === Bridge.Redux.Examples.Basic.ActionTypes.Decrement) {
                 return { value: ((state.value - 1) | 0) };
             }
 
@@ -24574,12 +24605,12 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
                 return {  };
             }
 
-            if (action.getType() === Bridge.Redux.Examples.Basic.ActionTypes.SetName) {
-                return { name: action.getName(), age: state.age };
+            if (action.type === Bridge.Redux.Examples.Basic.ActionTypes.SetName) {
+                return { name: action.name, age: state.age };
             }
 
-            if (action.getType() === Bridge.Redux.Examples.Basic.ActionTypes.SetAge) {
-                return { name: state.name, age: action.getAge() };
+            if (action.type === Bridge.Redux.Examples.Basic.ActionTypes.SetAge) {
+                return { name: state.name, age: action.age };
             }
 
             return state;
@@ -24625,78 +24656,20 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
         }
     });
 
-    Bridge.define("Bridge.Redux.Examples.Containers", {
-        statics: {
-            todoApp: function () {
-                var mapStateToProps = $_.Bridge.Redux.Examples.Containers.f1;
-
-                var mapDispatchToProps = $_.Bridge.Redux.Examples.Containers.f2;
-
-                var connecter = ReactRedux.connect(mapStateToProps, mapDispatchToProps);
-
-                return connecter(Bridge.Redux.Examples.Components.todoList);
+    Bridge.define("Bridge.Redux.Examples.ContainerProps$2", function (TState, TProps) { return {
+        config: {
+            properties: {
+                Store: null,
+                StateToPropsMapper: null,
+                Renderer: null
             }
         }
-    });
+    }; });
 
-    Bridge.ns("Bridge.Redux.Examples.Containers", $_);
-
-    Bridge.apply($_.Bridge.Redux.Examples.Containers, {
-        f1: function (state) {
-            return { todos: state };
-        },
-        f2: function (dispatch) {
-            return { addTodo: function (text) {
-                dispatch(Bridge.Redux.Examples.Actions.addTodo(text));
-            }, toggleTodo: function (id) {
-                dispatch(Bridge.Redux.Examples.Actions.toggleTodo(id));
-            } };
-        }
-    });
-
-    Bridge.define("Bridge.Redux.Examples.ReactRedux", {
+    Bridge.define("Bridge.Redux.Examples.ReduxContainers", {
         statics: {
-            provider: function (T, reduxStore, mainApp) {
-                return React.createElement(ReactRedux.Provider, { store: reduxStore }, mainApp);
-            }
-        }
-    });
-
-    Bridge.define("Bridge.Redux.Examples.ReactTodoApp", {
-        statics: {
-            init: function () {
-
-            }
-        }
-    });
-
-    Bridge.define("Bridge.Redux.Examples.Reducers", {
-        statics: {
-            itemsReducer: function () {
-                return Bridge.Redux.Reducer$1.create$1($_.Bridge.Redux.Examples.Reducers.f1);
-            }
-        }
-    });
-
-    Bridge.ns("Bridge.Redux.Examples.Reducers", $_);
-
-    Bridge.apply($_.Bridge.Redux.Examples.Reducers, {
-        f1: function (state, action) {
-            if (action.type === Bridge.Redux.Examples.ActionTypes.AddTodo) {
-                var id = (System.Linq.Enumerable.from(state).count() + 1) | 0;
-                var todo = { id: id, isDone: false, text: System.String.format("{0} #{1}", action.todoText, id) };
-
-                return System.Linq.Enumerable.from(state).concat([todo]);
-            } else if (action.type === Bridge.Redux.Examples.ActionTypes.ToggleTodo) {
-                return System.Linq.Enumerable.from(state).select(function (todo1) {
-                    if (todo1.id === action.todoId) {
-                        return { id: todo1.id, isDone: !todo1.isDone, text: todo1.text };
-                    } else {
-                        return todo1;
-                    }
-                });
-            } else {
-                return state;
+            create: function (TAppState, TProps, container) {
+                return new (Bridge.Redux.Examples.ReduxContainer$2(TAppState,TProps))(container.getStore(), container.getStateToPropsMapper(), container.getRenderer());
             }
         }
     });
@@ -24714,19 +24687,25 @@ Bridge.assembly("Bridge.Redux.Examples", function ($asm, globals) {
         }
     });
 
-    Bridge.define("Bridge.Redux.Examples.Basic.SimpleAction", {
-        inherits: [Bridge.Redux.IReduxAction$1],
-        config: {
-            properties: {
-                Type: 0,
-                Name: null,
-                Age: 0
-            },
-            alias: [
-            "getType", "Bridge$Redux$IReduxAction$1$getType",
-            "setType", "Bridge$Redux$IReduxAction$1$setType"
-            ]
+    Bridge.define("Bridge.Redux.Examples.ReduxContainer$2", function (TAppState, TProps) { return {
+        inherits: [Bridge.React.Component$2(Bridge.Redux.Examples.ContainerProps$2(TAppState,TProps),TProps)],
+        ctor: function (store, stateMapper, renderer) {
+            this.$initialize();
+            Bridge.React.Component$2(Bridge.Redux.Examples.ContainerProps$2(TAppState,TProps),TProps).ctor.call(this, Bridge.merge(new (Bridge.Redux.Examples.ContainerProps$2(TAppState,TProps))(), {
+                setStore: store,
+                setStateToPropsMapper: stateMapper,
+                setRenderer: renderer
+            } ));
+
+        },
+        componentDidMount: function () {
+            this.getprops().getStore().subscribe(Bridge.fn.bind(this, function () {
+                this.setWrappedState(this.getprops().getStateToPropsMapper()(this.getprops().getStore().getState()));
+            }));
+        },
+        render: function () {
+            return this.getprops().getRenderer()(this.getstate());
         }
-    });
+    }; });
 });
 

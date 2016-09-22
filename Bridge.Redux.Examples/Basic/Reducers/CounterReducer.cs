@@ -2,9 +2,9 @@
 {
     public static partial class Reducers
     {
-        public static Reducer<Counter> CounterReducer()
+        public static ReduxReducer<Counter> CounterReducer()
         {
-            return Reducer<Counter>.Create<SimpleAction>((state, action) =>
+            return ReduxReducers.Create<Counter, SimpleAction>((state, action) =>
             {
                 if (state.IsUndefined())
                     return new Counter { Value = 0 };

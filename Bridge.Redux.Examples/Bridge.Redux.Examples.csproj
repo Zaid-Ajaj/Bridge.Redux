@@ -44,8 +44,9 @@
     <Compile Include="React\Actions.cs" />
     <Compile Include="React\Components.cs" />
     <Compile Include="React\Models.cs" />
-    <Compile Include="React\Reducers.cs" />
+    <Compile Include="React\AppReducers.cs" />
     <Compile Include="React\Styles.cs" />
+    <Compile Include="React\TodoListContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Bridge\bridge.json" />

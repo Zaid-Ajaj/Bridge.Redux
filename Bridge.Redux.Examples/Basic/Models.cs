@@ -28,10 +28,11 @@
         SetAge
     }
 
-    public class SimpleAction : IReduxAction<ActionTypes>
+    [ObjectLiteral]
+    public class SimpleAction : ReduxAction<ActionTypes>
     {
-        public ActionTypes Type { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
     }
+
 }

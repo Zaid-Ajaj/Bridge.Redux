@@ -2,9 +2,9 @@
 {
     public static partial class Reducers
     {
-        public static Reducer<User> UserReducer()
+        public static ReduxReducer<User> UserReducer()
         {
-            return Reducer<User>.Create<SimpleAction>((state, action) =>
+            return ReduxReducers.Create<User, SimpleAction>((state, action) =>
             {
                 if (state.IsUndefined())
                     return new User { };

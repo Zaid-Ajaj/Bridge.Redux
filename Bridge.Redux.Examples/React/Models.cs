@@ -32,9 +32,8 @@ namespace Bridge.Redux.Examples
     }
 
     [ObjectLiteral]
-    public class SimpleAction
+    public class SimpleAction : ReduxAction<ActionTypes>
     {
-        public ActionTypes Type { get; set; }
         public string TodoText { get; set; }
         public int TodoId { get; set; }
     }
