@@ -1,5 +1,6 @@
-﻿
-using Bridge.Html5;
+﻿using Bridge.Html5;
+using Bridge.React;
+using Bridge.ReactRedux;
 using System;
 using System.Collections.Generic;
 
@@ -14,11 +15,11 @@ namespace Bridge.Redux.Examples
             var initialState = new TodoItem[] { };
             var store = Redux.CreateStore(appReducer, initialState);
 
-            var todoListContainer = ReduxContainers.Create(new ContainerProps<IEnumerable<TodoItem>, IEnumerable<TodoItem>>
+            var todoListContainer = ReactRedux.ReactRedux.Component(new ContainerProps<IEnumerable<TodoItem>, IEnumerable<TodoItem>>
             {
                 Store = store,
                 StateToPropsMapper = state => state,
-                Renderer = props => Components.TodoList(new TodoListProps
+                Renderer = props => StaticComponent.Stateless(Components.TodoList, new TodoListProps
                 {
                     Todos = props,
                     AddTodo = text => store.Dispatch(Actions.AddTodo(text)),
@@ -29,7 +30,7 @@ namespace Bridge.Redux.Examples
             React.React.Render(
                     todoListContainer,
                     Document.GetElementById("app")
-                );
+            );
         }
     }
 }

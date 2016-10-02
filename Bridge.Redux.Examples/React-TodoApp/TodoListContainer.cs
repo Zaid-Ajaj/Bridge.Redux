@@ -69,10 +69,10 @@ namespace Bridge.Redux.Examples
         }
     }
 
-    public class ContainerProps<TState, TProps>
+    public class ContainerProps<TState, TStatePart>
     {
         public Store<TState> Store { get; set; }
-        public Func<TState, TProps> StateToPropsMapper { get; set; }
-        public Func<TProps, ReactElement> Renderer { get; set; }
+        public Func<TState, TStatePart> StateToPropsMapper { get; set; }
+        public Func<TStatePart, ReactElement> Renderer { get; set; }
     }
 }
