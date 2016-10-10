@@ -63,11 +63,11 @@ var counterView = ReactRedux.Component(new ContainerProps<Counter, int>
 {
     Store = store,
     StateToPropsMapper = counter => counter.Value,
-    Renderer = counteValue =>
+    Renderer = counterValue =>
     {
         return DOM.Div(new Attributes { },
                  DOM.Button(new ButtonAttributes { OnClick = e => store.Dispatch(new IncrementValue()) }, "+"),
-                 DOM.H4($"Counter value is {counteValue}"),
+                 DOM.H4($"Counter value is {counterValue}"),
                  DOM.Button(new ButtonAttributes { OnClick = e => store.Dispatch(new DecrementValue()) }, "-")
               );
     }
