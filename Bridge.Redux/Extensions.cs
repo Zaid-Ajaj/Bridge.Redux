@@ -1,10 +1,24 @@
-﻿namespace Bridge.Redux
+﻿using Bridge.Html5;
+
+namespace Bridge.Redux
 {
     public static class Extensions
     {
         public static bool IsUndefined<T>(this T value)
         {
             return Script.Write<bool>("value === undefined");
+        }
+
+        public static void Dispatch<T, U>(this Store<T> store, U action)
+        {
+            Script.Write("action = JSON.parse(JSON.stringify(action))");
+            action["type"] = typeof(U).FullName;
+            Script.Write("store.dispatch(action)");
+        }
+
+        public static void DispatchPlainObject<T, U>(this Store<T> store, U action)
+        {
+            Script.Write("store.dispatch(action)");
         }
 
         // Works only with object literals

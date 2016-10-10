@@ -17,6 +17,7 @@ namespace Bridge.ReactRedux
 
         protected override void ComponentDidMount()
         {
+            SetState(props.StateToPropsMapper(props.Store.GetState()));
             props.Store.Subscribe(() => SetState(props.StateToPropsMapper(props.Store.GetState())));
         }
 

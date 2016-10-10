@@ -1,9 +1,12 @@
 {
     "output": "Bridge/output",
-    "combineScripts": true
+    "combineScripts": true,
+    "reflection": {
+        "enabled" :  true
+    }
     // Uncomment to add TypeScript Definition file (.d.ts) generation to your project.
     // , "generateTypeScript": true
 
-    // More options available at: 
+    // More options available at:
     // http://bridge.net/docs/global-configuration
 }

@@ -23035,10 +23035,26 @@ Bridge.define("System.Text.RegularExpressions.RegexParser", {
 Bridge.assembly("Bridge.Redux", function ($asm, globals) {
     "use strict";
 
+    Bridge.define("Bridge.Redux.BuildReducer", {
+        statics: {
+            for: function (TState) {
+                return new (Bridge.Redux.ReducerBuilder$1(TState))();
+            }
+        }
+    });
+
     Bridge.define("Bridge.Redux.Extensions", {
         statics: {
             isUndefined: function (T, value) {
                 return value === undefined;
+            },
+            dispatch: function (T, U, store, action) {
+                action = JSON.parse(JSON.stringify(action));
+                action.type = Bridge.Reflection.getTypeFullName(U);
+                store.dispatch(action);
+            },
+            dispatchPlainObject: function (T, U, store, action) {
+                store.dispatch(action);
             },
             mergeWith: function (T, value, otherValue) {
                 var result = { };
@@ -23103,6 +23119,45 @@ Bridge.assembly("Bridge.Redux", function ($asm, globals) {
              
         }
     });
+
+    Bridge.define("Bridge.Redux.ReducerBuilder$1", function (TState) { return {
+        reducersDict: null,
+        ctor: function () {
+            this.$initialize();
+            this.reducersDict = new (System.Collections.Generic.Dictionary$2(String,Object))();
+        },
+        whenActionHasType$1: function (TAction, reducer) {
+            var $t;
+            this.reducersDict.add(Bridge.Reflection.getTypeFullName(TAction), reducer);
+            $t = Bridge.getEnumerator(this.reducersDict);
+            while ($t.moveNext()) {
+                var value = $t.getCurrent();
+                Bridge.Console.log(System.String.format("{0} => {1}", value.key, value.value));
+            }
+            return this;
+        },
+        whenActionHasType: function (TAction, reducer) {
+            var actualReducer = function (state, action) {
+                return reducer(state);
+            };
+
+            this.reducersDict.add(Bridge.Reflection.getTypeFullName(TAction), actualReducer);
+            return this;
+        },
+        build: function () {
+            var pureReducer = Bridge.fn.bind(this, function (state, action) {
+                var typeName = action.type;
+                if (this.reducersDict.containsKey(typeName)) {
+                    var func = this.reducersDict.get(typeName);
+                    return func(state, action);
+                } else {
+                    return state;
+                }
+            });
+
+            return pureReducer;
+        }
+    }; });
 
     Bridge.define("Bridge.Redux.ReduxReducer$1", {
         statics: {
@@ -24468,6 +24523,7 @@ Bridge.assembly("Bridge.ReactRedux", function ($asm, globals) {
             // constructor body should be empty
         },
         componentDidMount: function () {
+            this.setWrappedState(this.getprops().getStateToPropsMapper()(this.getprops().getStore().getState()));
             this.getprops().getStore().subscribe(Bridge.fn.bind(this, function () {
                 this.setWrappedState(this.getprops().getStateToPropsMapper()(this.getprops().getStore().getState()));
             }));
@@ -24481,39 +24537,53 @@ Bridge.assembly("Bridge.ReactRedux", function ($asm, globals) {
 Bridge.assembly("ReactReduxCounter", function ($asm, globals) {
     "use strict";
 
-    Bridge.define("ReactReduxCounter.Actions", {
-        statics: {
-            increment: function () {
-                return { type: ReactReduxCounter.ActionTypes.Increment };
-            },
-            decrement: function () {
-                return { type: ReactReduxCounter.ActionTypes.Decrement };
-            }
-        }
-    });
-
-    Bridge.define("ReactReduxCounter.ActionTypes", {
-        $kind: "enum",
-        statics: {
-            Increment: 0,
-            Decrement: 1
-        }
-    });
-
     Bridge.define("ReactReduxCounter.App", {
         $main: function () {
-            var counterReducer = Bridge.Redux.ReduxReducers.create($_.ReactReduxCounter.App.f1);
+            var counterReducer = Bridge.Redux.BuildReducer.for(Object).whenActionHasType(ReactReduxCounter.IncrementValue, $_.ReactReduxCounter.App.f1).whenActionHasType$1(ReactReduxCounter.DecrementValue, $_.ReactReduxCounter.App.f2).build();
 
-            var store = Redux.createStore(counterReducer);
+
+            //var counterReducer = ReduxReducers.Create((Counter state, CounterAction action) =>
+            //{
+            //    if (state.IsUndefined())
+            //        return new Counter { Value = 0 };
+
+            //    if (action.Type == ActionTypes.Increment)
+            //    {
+            //        return new Counter { Value = state.Value + 1 };
+            //    }
+            //    else if (action.Type == ActionTypes.Decrement)
+            //    {
+            //        return new Counter { Value = state.Value - 1 };
+            //    }
+            //    else
+            //    {
+            //        return state;
+            //    }
+            //});
+
+            var initialState = { value: 0 };
+
+            var store = Redux.createStore(counterReducer, initialState);
+
+            store.subscribe(function () {
+                Bridge.Console.log(System.String.format("Current value => {0}", store.getState().value));
+            });
+
+            Bridge.Redux.Extensions.dispatch(Object, ReactReduxCounter.IncrementValue, store, new ReactReduxCounter.IncrementValue());
+            // Current value => 1
+            Bridge.Redux.Extensions.dispatch(Object, ReactReduxCounter.IncrementValue, store, new ReactReduxCounter.IncrementValue());
+            // Current value => 2
+            Bridge.Redux.Extensions.dispatch(Object, ReactReduxCounter.IncrementValue, store, new ReactReduxCounter.IncrementValue());
+            // Current value => 3
 
             var counterView = Bridge.ReactRedux.ReactRedux.component(Object, System.Int32, Bridge.merge(new (Bridge.ReactRedux.ContainerProps$2(Object,System.Int32))(), {
                 setStore: store,
-                setStateToPropsMapper: $_.ReactReduxCounter.App.f2,
+                setStateToPropsMapper: $_.ReactReduxCounter.App.f3,
                 setRenderer: function (counteValue) {
                     return React.DOM.div({  }, React.DOM.button({ onClick: function (e) {
-                        store.dispatch(ReactReduxCounter.Actions.increment());
+                        Bridge.Redux.Extensions.dispatch(Object, ReactReduxCounter.IncrementValue, store, new ReactReduxCounter.IncrementValue());
                     } }, "+"), React.DOM.h4(null, System.String.format("Counter value is {0}", counteValue)), React.DOM.button({ onClick: function (e) {
-                        store.dispatch(ReactReduxCounter.Actions.decrement());
+                        Bridge.Redux.Extensions.dispatch(Object, ReactReduxCounter.DecrementValue, store, new ReactReduxCounter.DecrementValue());
                     } }, "-"));
                 }
             } ));
@@ -24528,22 +24598,36 @@ Bridge.assembly("ReactReduxCounter", function ($asm, globals) {
     Bridge.ns("ReactReduxCounter.App", $_);
 
     Bridge.apply($_.ReactReduxCounter.App, {
-        f1: function (state, action) {
-            if (Bridge.Redux.Extensions.isUndefined(Object, state)) {
-                return { value: 0 };
-            }
-
-            if (action.type === ReactReduxCounter.ActionTypes.Increment) {
-                return { value: ((state.value + 1) | 0) };
-            } else if (action.type === ReactReduxCounter.ActionTypes.Decrement) {
-                return { value: ((state.value - 1) | 0) };
-            } else {
-                return state;
-            }
+        f1: function (state) {
+            return { value: ((state.value + 1) | 0) };
         },
-        f2: function (counter) {
+        f2: function (state, action) {
+            return { value: ((state.value - 1) | 0) };
+        },
+        f3: function (counter) {
             return counter.value;
         }
     });
+
+    Bridge.define("ReactReduxCounter.App.Pure", {
+        statics: {
+            increment: function (state, action) {
+                return { value: ((state.value + 1) | 0) };
+            },
+            decrement: function (state, action) {
+                return { value: ((state.value - 1) | 0) };
+            }
+        }
+    });
+
+    Bridge.define("ReactReduxCounter.DecrementValue");
+
+    Bridge.define("ReactReduxCounter.IncrementValue");
+
+    Bridge.setMetadata(Object, function () { return {"members":[{"accessibility":2,"isSynthetic":true,"name":".ctor","type":1,"sname":"ctor"},{"accessibility":2,"name":"Value","type":16,"returnType":System.Int32,"getter":{"accessibility":2,"name":"get_Value","type":8,"returnType":System.Int32,"fget":"value"},"setter":{"accessibility":2,"name":"set_Value","type":8,"params":[System.Int32],"returnType":Object,"fset":"value"},"fname":"value"}]}; });
+    Bridge.setMetadata(ReactReduxCounter.IncrementValue, function () { return {"members":[{"accessibility":2,"isSynthetic":true,"name":".ctor","type":1,"sname":"ctor"}]}; });
+    Bridge.setMetadata(ReactReduxCounter.DecrementValue, function () { return {"members":[{"accessibility":2,"isSynthetic":true,"name":".ctor","type":1,"sname":"ctor"}]}; });
+    Bridge.setMetadata(ReactReduxCounter.App, function () { return {"members":[{"accessibility":2,"name":"Main","isStatic":true,"type":8,"sname":"main","returnType":Object}]}; });
+    Bridge.setMetadata(ReactReduxCounter.App.Pure, function () { return {"members":[{"accessibility":2,"name":"Decrement","isStatic":true,"type":8,"paramsInfo":[{"name":"state","parameterType":Object,"position":0},{"name":"action","parameterType":ReactReduxCounter.DecrementValue,"position":1}],"sname":"decrement","returnType":Object,"params":[Object,ReactReduxCounter.DecrementValue]},{"accessibility":2,"name":"Increment","isStatic":true,"type":8,"paramsInfo":[{"name":"state","parameterType":Object,"position":0},{"name":"action","parameterType":ReactReduxCounter.IncrementValue,"position":1}],"sname":"increment","returnType":Object,"params":[Object,ReactReduxCounter.IncrementValue]}]}; });
 });
 
