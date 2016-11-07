@@ -1,6 +1,10 @@
 # Bridge.Redux 
 Bindings of the Redux library for the Bridge transpiler. It provides a type-safe interface to interact with the redux library as well as DSL's to idiomatically create reducers from C#. 
 
+# Installation
+```
+Install-Package Bridge.Redux
+````
 # Usage 
 First define your state object, in our case it is a simple counter
 ```csharp
@@ -65,6 +69,10 @@ There you have it, a working redux app, utilizing C#'s type-system :)
 Wait, there is more...
 
 # Usage with Bridge.React
+First install the ReactRedux library, this library depends on `Bridge.React` and `Bridge.Redux`
+```
+Install-Package Bridge.ReactRedux
+```
 The Bridge.ReactRedux library integrates Bridge.Redux with Bridge.React to enable writing React + Redux apps in pure C#. using it is very simple:
 - Provide a `Store<TState>` (Store)
 - Provide a `Func<TState, TProps>` (StateToPropsMapper)
