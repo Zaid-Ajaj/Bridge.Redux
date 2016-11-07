@@ -66,6 +66,8 @@ store.Dispatch(new IncrementValue());
 // Current value => 3
 ```
 There you have it, a working redux app, utilizing C#'s type-system :)
+### A more involved demo project is the [ReactReduxTodoApp](https://github.com/Zaid-Ajaj/ReactReduxTodoApp)
+
 Wait, there is more...
 
 # Usage with Bridge.React
