@@ -17,6 +17,8 @@ namespace ReactReduxCounter
     // Actions 
     public class IncrementValue { }
     public class DecrementValue { }
+
+    public class UnknownAction { };
      
 
     // Simpler "idiomatic" actions
@@ -33,38 +35,44 @@ namespace ReactReduxCounter
     //}
 
    
-
+    static class Attr
+    {
+        public static ButtonAttributes OnClick(Action<Bridge.React.MouseEvent<HTMLButtonElement>> ev)
+        {
+            return new ButtonAttributes { OnClick = ev };
+        }
+    }
     public static class App
     {
-        static class Pure
+        static void Log<T>(T something)
         {
-            public static Counter Increment(Counter state, IncrementValue action)
-            {
-                return new Counter { Value = state.Value + 1 };
-            }
-
-            public static Counter Decrement(Counter state, DecrementValue action)
-            {
-                return new Counter { Value = state.Value - 1 };
-            }
+            Script.Write("console.log(something)");
         }
-        
-
-
         public static void Main()
         {
             var counterReducer = 
-                BuildReducer
-                  .For<Counter>()
-                  .WhenActionHasType<IncrementValue>(state =>
-                  {
-                      return new Counter { Value = state.Value + 1 };
-                  }) 
-                  .WhenActionHasType<DecrementValue>((state, action) =>
-                  {
-                      return new Counter { Value = state.Value - 1 };
-                  })
-                  .Build();
+                  BuildReducer
+                    .For<Counter>() 
+                    .WhenStateIsUndefinedOrNull(() =>
+                    {
+                        Log("State was either null or undefined, returning a default counter...");
+                        return new Counter { Value = 0 };
+                    })
+                    .WhenActionHasType<IncrementValue>((state, action) =>
+                    {
+                        return new Counter { Value = state.Value + 1 };
+                    }) 
+                    .WhenActionHasType<DecrementValue>((state, action) =>
+                    {
+                        return new Counter { Value = state.Value - 1 };
+                    })
+                    .WhenActionIsUnknown(state =>
+                    {
+                        Log("Action dispatched was unknown, returning the same state object back with no modifications");
+                        return state;
+                    })
+                    .Build();
+
 
 
             //var counterReducer = ReduxReducers.Create((Counter state, CounterAction action) =>
@@ -103,12 +111,12 @@ namespace ReactReduxCounter
             {
                 Store = store,
                 StateToPropsMapper = counter => counter.Value,
-                Renderer = counteValue =>
+                Renderer = counterValue =>
                 {
                     return DOM.Div(new Attributes { },
-                             DOM.Button(new ButtonAttributes { OnClick = e => store.Dispatch(new IncrementValue()) }, "+"),
-                             DOM.H4($"Counter value is {counteValue}"),
-                             DOM.Button(new ButtonAttributes { OnClick = e => store.Dispatch(new DecrementValue()) }, "-")
+                             DOM.Button(Attr.OnClick(e => store.Dispatch(new IncrementValue())), "+"),
+                             DOM.H4($"Counter value is {counterValue}"),
+                             DOM.Button(Attr.OnClick(e => store.Dispatch(new DecrementValue())), "-")
                           );
                 }
             });
