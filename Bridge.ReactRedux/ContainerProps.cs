@@ -4,6 +4,7 @@ using Bridge.Redux;
 
 namespace Bridge.ReactRedux
 {
+    [ObjectLiteral]
     public class ContainerProps<TState, TStatePart>
     {
         public Store<TState> Store { get; set; }

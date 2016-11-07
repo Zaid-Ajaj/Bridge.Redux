@@ -17,14 +17,17 @@ namespace Bridge.ReactRedux
 
         protected override void ComponentDidMount()
         {
-            SetState(props.StateToPropsMapper(props.Store.GetState()));
+            var initialState = props.Store.GetState();
+
+            SetState(props.StateToPropsMapper(initialState));
+
             props.Store.Subscribe(() => SetState(props.StateToPropsMapper(props.Store.GetState())));
         }
 
 
         public override ReactElement Render()
         {
-            return props.Renderer(state);
+            return state == null ? DOM.Div(new Attributes { }) : props.Renderer(state);
         }
     }
 }
