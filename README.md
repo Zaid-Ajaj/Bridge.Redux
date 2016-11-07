@@ -67,7 +67,7 @@ Wait, there is more...
 # Usage with Bridge.React
 The Bridge.ReactRedux library integrates Bridge.Redux with Bridge.React to enable writing React + Redux apps in pure C#. using it is very simple:
 - Provide a `Store<TState>` (Store)
-- Provide a `Func<TState, TProps` (StateToPropsMapper)
+- Provide a `Func<TState, TProps>` (StateToPropsMapper)
 - Provide a `Func<TProps, ReactElement>` Renderer
 ```csharp
 var counterView = ReactRedux.Component(new ContainerProps<Counter, int>
