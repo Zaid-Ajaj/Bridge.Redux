@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 namespace Bridge.Redux
 {
-
+    /// <summary>
+    /// DSL to create redux reducers using pattern matching on the types of actions 
+    /// </summary>
+    /// <typeparam name="TState">The type of the state tree object</typeparam>
     public class ReducerBuilder<TState>
     {
         private Dictionary<string, object> reducersDict;

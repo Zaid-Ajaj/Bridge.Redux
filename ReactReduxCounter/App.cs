@@ -94,6 +94,8 @@ namespace ReactReduxCounter
             //    }
             //});
 
+            
+
             var initialState = new Counter { Value = 0 };
 
             var store = Redux.CreateStore(counterReducer, initialState);

@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Redux", "Bridge.Redu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.ReactRedux", "Bridge.ReactRedux\Bridge.ReactRedux.csproj", "{DBA2ECF3-D7A4-4987-AD29-470B2B5996C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactReduxCounter", "ReactReduxCounter\ReactReduxCounter.csproj", "{05AABBC2-0AC6-4DC4-84E8-5B4B77600841}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge.Redux.Tests", "Bridge.Redux.Tests\Bridge.Redux.Tests.csproj", "{3EA00283-2E18-4A43-B98C-93200407A28E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{DBA2ECF3-D7A4-4987-AD29-470B2B5996C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBA2ECF3-D7A4-4987-AD29-470B2B5996C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBA2ECF3-D7A4-4987-AD29-470B2B5996C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05AABBC2-0AC6-4DC4-84E8-5B4B77600841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05AABBC2-0AC6-4DC4-84E8-5B4B77600841}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05AABBC2-0AC6-4DC4-84E8-5B4B77600841}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05AABBC2-0AC6-4DC4-84E8-5B4B77600841}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA00283-2E18-4A43-B98C-93200407A28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA00283-2E18-4A43-B98C-93200407A28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA00283-2E18-4A43-B98C-93200407A28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA00283-2E18-4A43-B98C-93200407A28E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
