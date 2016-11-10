@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ReactReduxCounter")]
+[assembly: AssemblyTitle("Bridge.ReactRedux")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ReactReduxCounter")]
+[assembly: AssemblyProduct("Bridge.ReactRedux")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("05aabbc2-0ac6-4dc4-84e8-5b4b77600841")]
+[assembly: Guid("dba2ecf3-d7a4-4987-ad29-470b2b5996c7")]
 
 // Version information for an assembly consists of the following four values:
 //
