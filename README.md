@@ -45,7 +45,7 @@ var counterReducer =
       .Build();
 ```
 NOTE: 
-    Redux actions MUST NOT be `[ObjectLiteral]` when using the above `BuildReducer` class because the generic type information would go and it is needed for DSL to infer what method should be executed.
+    Redux actions MUST NOT be `[ObjectLiteral]` when using the above `BuildReducer` class because the generic type information would disappear during run-time while it is needed for the DSL to infer what method should be executed.
 
 Create your store
 ```csharp
