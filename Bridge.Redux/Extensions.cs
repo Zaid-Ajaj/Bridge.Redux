@@ -24,6 +24,13 @@ namespace Bridge.Redux
             return Script.Write<TState>("reducer(state, action)");
         }
 
+        public static TAction NormalizeActionForDispatch<TAction>(this TAction action)
+        {
+            Script.Write("action = JSON.parse(JSON.stringify(action))");
+            action["type"] = typeof(TAction).FullName;
+            return action;
+        } 
+
         public static void DispatchPlainObject<T, U>(this Store<T> store, U action)
         {
             Script.Write("store.dispatch(action)");
