@@ -1,5 +1,5 @@
 # Bridge.Redux - [Wiki](https://github.com/Zaid-Ajaj/Bridge.Redux/wiki)
-Bindings of the Redux library for the Bridge transpiler. It provides a type-safe interface to interact with the redux library as well as DSL's to idiomatically create reducers from C#. 
+Bindings of the Redux library for the Bridge transpiler. It provides a type-safe interface to interact with the redux library as well as DSL's to idiomatically create reducers from C#. `thunk` and `logger` middleware are built-in as well.
 
 ### Examples
  - [ReactReduxTodoApp](https://github.com/Zaid-Ajaj/ReactReduxTodoApp)
