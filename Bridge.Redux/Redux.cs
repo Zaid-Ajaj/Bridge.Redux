@@ -19,7 +19,7 @@ namespace Bridge.Redux
         [Name("createStore")]
         public static extern Store<TState> CreateStore<TState>(ReduxReducer<TState> reducer, TState initialState, StoreMiddleware middleware);
         [Name("applyMiddleware")]
-        public static extern StoreMiddleware ApplyMiddleware(params Middleware[] middlewares);
+        public static extern StoreMiddleware ApplyMiddleware(params ReduxMiddleware[] middlewares);
         [Name("combineReducers")]
         public static extern ReduxReducer<TState> CombineReducers<TState>(TState state);
     }
