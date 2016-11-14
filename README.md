@@ -1,4 +1,4 @@
-# Bridge.Redux 
+# Bridge.Redux - [Wiki](https://github.com/Zaid-Ajaj/Bridge.Redux/wiki)
 Bindings of the Redux library for the Bridge transpiler. It provides a type-safe interface to interact with the redux library as well as DSL's to idiomatically create reducers from C#. 
 
 # Installation
