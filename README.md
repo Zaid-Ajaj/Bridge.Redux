@@ -3,6 +3,7 @@ Bindings of the Redux library for the Bridge transpiler. It provides a type-safe
 
 ### Examples
  - [ReactReduxTodoApp](https://github.com/Zaid-Ajaj/ReactReduxTodoApp)
+ - Used in [Bridge.Ractive.Example](https://github.com/Zaid-Ajaj/Bridge.Ractive/tree/master/Bridge.Ractive.Example)
  - More to come...
 
 # Installation
