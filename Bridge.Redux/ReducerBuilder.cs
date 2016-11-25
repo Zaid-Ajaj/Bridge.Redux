@@ -43,6 +43,10 @@ namespace Bridge.Redux
         }
 
 
+        bool IsUndefined<T>(T value)
+        {
+            return Script.Write<bool>("value === undefined");
+        }
 
         public ReducerBuilder<TState> WhenActionHasType<TAction>(Func<TState, TState> reducer)
         {
@@ -75,7 +79,7 @@ namespace Bridge.Redux
         {
             Func<TState, object, TState> pureReducer = (state, action) =>
             {
-                if (reducersDict.ContainsKey(undefinedStateTypeName) && (state.IsUndefined() || state == null))
+                if (reducersDict.ContainsKey(undefinedStateTypeName) && (IsUndefined(state) || state == null))
                 {
                     var func = (Func<TState, object, TState>)reducersDict[undefinedStateTypeName];
                     return func(state, action);

@@ -8,11 +8,12 @@
             var initialCounter = new Counter { Count = 0 };
 
             var counterReducer =
-                BuildReducer.For<Counter>()
-                            .WhenActionHasType<Increment>((state, act) => new Counter { Count = state.Count + 1 })
-                            .WhenActionHasType<Decrement>((state, act) => new Counter { Count = state.Count - 1 })
-                            .WhenActionHasType<IncrementBy>((state, act) => new Counter { Count = state.Count + act.Value })
-                            .Build();
+                    BuildReducer
+                        .For<Counter>()
+                        .WhenActionHasType<Increment>((state, act) => new Counter { Count = state.Count + 1 })
+                        .WhenActionHasType<Decrement>((state, act) => new Counter { Count = state.Count - 1 })
+                        .WhenActionHasType<IncrementBy>((state, act) => new Counter { Count = state.Count + act.Value })
+                        .Build();
 
             var store = Redux.CreateStore(counterReducer, initialCounter);
 

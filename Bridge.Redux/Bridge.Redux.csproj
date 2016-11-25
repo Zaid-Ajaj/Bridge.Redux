@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Extensions.cs" />
+    <Compile Include="Generated.Redux.cs" />
     <Compile Include="ReducerBuilder.cs" />
     <Compile Include="Middleware.cs" />
     <Compile Include="ReduxReducers.cs" />
@@ -54,6 +55,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Generator.fsx" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,6 +3,10 @@
     using QUnit;
     using System;
 
+    public static class Helpers
+    {
+        public static bool IsUndefined<T>(this T value) => Script.Write<bool>("value === undefined");
+    }
     public static class ReducerBuilderTests
     {
         public static void Run()
