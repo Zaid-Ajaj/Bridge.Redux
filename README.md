@@ -1,5 +1,10 @@
-# Bridge.Redux 
-Bindings of the Redux library for the Bridge transpiler. It provides a type-safe interface to interact with the redux library as well as DSL's to idiomatically create reducers from C#. 
+# Bridge.Redux - [Wiki](https://github.com/Zaid-Ajaj/Bridge.Redux/wiki)
+Bindings of the Redux library for the Bridge transpiler. It provides a type-safe interface to interact with the redux library as well as DSL's to idiomatically create reducers from C#. `thunk` and `logger` middleware are built-in as well.
+
+### Examples
+ - [ReactReduxTodoApp](https://github.com/Zaid-Ajaj/ReactReduxTodoApp)
+ - Used in [Bridge.Ractive.Example](https://github.com/Zaid-Ajaj/Bridge.Ractive/tree/master/Bridge.Ractive.Example)
+ - More to come...
 
 # Installation
 ```
@@ -66,35 +71,3 @@ store.Dispatch(new IncrementValue());
 // Current value => 3
 ```
 There you have it, a working redux app, utilizing C#'s type-system :)
-### A more involved demo project is the [ReactReduxTodoApp](https://github.com/Zaid-Ajaj/ReactReduxTodoApp)
-
-Wait, there is more...
-
-# Usage with Bridge.React
-First install the ReactRedux library, this library depends on `Bridge.React` and `Bridge.Redux`
-```
-Install-Package Bridge.ReactRedux
-```
-The Bridge.ReactRedux library integrates Bridge.Redux with Bridge.React to enable writing React + Redux apps in pure C#. using it is very simple:
-- Provide a `Store<TState>` (Store)
-- Provide a `Func<TState, TProps>` (StateToPropsMapper)
-- Provide a `Func<TProps, ReactElement>` Renderer
-```csharp
-var counterView = ReactRedux.Component(new ContainerProps<Counter, int>
-{
-    Store = store,
-    StateToPropsMapper = counter => counter.Value,
-    Renderer = counterValue =>
-    {
-        return DOM.Div(new Attributes { },
-                 DOM.Button(new ButtonAttributes { OnClick = e => store.Dispatch(new IncrementValue()) }, "+"),
-                 DOM.H4($"Counter value is {counterValue}"),
-                 DOM.Button(new ButtonAttributes { OnClick = e => store.Dispatch(new DecrementValue()) }, "-")
-              );
-    }
-});
-```
-Render the component
-```csharp
-React.Render(counterView, Document.GetElementById("app"));
-```
