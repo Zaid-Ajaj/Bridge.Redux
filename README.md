@@ -7,6 +7,9 @@ Bindings of the Redux library for the Bridge transpiler. It provides a type-safe
  - More to come...
 
 # Installation
+The easy and convenient way in to copy and paste the contents of [Generated.Redux.cs](https://github.com/Zaid-Ajaj/Bridge.Redux/blob/master/Bridge.Redux/Generated.Redux.cs) in your project as a source file depecndency so you can tweak it however you like with no binary dependencies. 
+
+The Other way is to install it from nuget:
 ```
 Install-Package Bridge.Redux
 ````
