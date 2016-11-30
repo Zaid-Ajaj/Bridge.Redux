@@ -13,6 +13,7 @@ namespace Redux
     {
         public static void Dispatch<T, U>(this Store<T> store, U action)
         {
+
             if (action == null) throw new ArgumentNullException(nameof(action));
             if (typeof(U).FullName == "Object") throw new Exception("Action type cannot be 'Object' when dispatching a typed action where the full name of the action is needed, Consider using 'DispatchPlainObject'");
 
@@ -24,6 +25,7 @@ namespace Redux
 
         public static TState Apply<TState, TAction>(this ReduxReducer<TState> reducer, TState state, TAction action)
         {
+            if (action == null) throw new ArgumentNullException(nameof(action));
             Script.Write("action = JSON.parse(JSON.stringify(action))");
             action["type"] = typeof(TAction).FullName;
             return Script.Write<TState>("reducer(state, action)");
@@ -142,12 +144,16 @@ namespace Redux
 
         public ReducerBuilder<TState> WhenActionHasType<TAction>(Func<TState, TAction, TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+            if (typeof(TAction).FullName == "Object") throw new Exception("TAction cannot be 'Object' choose a proper type this action");
             reducersDict.Add(typeof(TAction).FullName, reducer);
             return this;
         }
 
         public ReducerBuilder<TState> WhenStateIsUndefinedOrNull(Func<TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+
             Func<TState, object, TState> actualReducer = (state, action) => reducer();
             if (!reducersDict.ContainsKey(undefinedStateTypeName))
             {
@@ -170,6 +176,8 @@ namespace Redux
 
         public ReducerBuilder<TState> WhenActionHasType<TAction>(Func<TState, TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+            if (typeof(TAction).FullName == "Object") throw new Exception("TAction cannot be 'Object' choose a proper type this action");
             Func<TState, TAction, TState> actualReducer = (state, action) => reducer(state);
 
             reducersDict.Add(typeof(TAction).FullName, actualReducer);
@@ -179,6 +187,8 @@ namespace Redux
 
         public ReducerBuilder<TState> WhenActionIsUnknown(Func<TState, TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+
             // forget about the second argument
             Func<TState, object, TState> actualReducer = (state, action) => reducer(state);
             if (!reducersDict.ContainsKey(unknownActionTypeName))

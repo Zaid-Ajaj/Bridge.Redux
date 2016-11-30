@@ -21,7 +21,7 @@
 
             QUnit.Module("Store");
 
-            QUnit.Test("GetState() from store get passed initial state when no dispatch has occured", assert =>
+            QUnit.Test("GetState() returns initial state when no dispatch has occured", assert =>
             {
                 var result = store.GetState();
                 assert.Equal(result.IsUndefined(), false);
@@ -36,7 +36,7 @@
                 assert.Equal(result.Count, 16);
             });
 
-            QUnit.Test("Dispatch() throws Exception when action is of type Object)", assert =>
+            QUnit.Test("Dispatch() throws Exception when action is of type Object", assert =>
             {
                 try
                 {
