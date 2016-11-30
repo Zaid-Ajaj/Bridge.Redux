@@ -27,7 +27,7 @@
                 assert.Equal(store.GetState().Count, 6);
             });
 
-            QUnit.Test("Dispatching action after a timeout works", assert =>
+            QUnit.Test("Dispatching action after a timeout (async) works", assert =>
             {
                 var done = assert.Async();
                 store.Dispatch<IncrementBy>(dispatch =>
@@ -39,6 +39,7 @@
                         dispatch(normalized);
                         assert.Equal(store.GetState().Count, 16);
                         done();
+
                     }, 500);
                 });
             });

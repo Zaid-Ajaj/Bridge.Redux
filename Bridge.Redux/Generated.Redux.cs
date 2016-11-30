@@ -13,6 +13,10 @@ namespace Redux
     {
         public static void Dispatch<T, U>(this Store<T> store, U action)
         {
+            if (action == null) throw new ArgumentNullException(nameof(action));
+            if (typeof(U).FullName == "Object") throw new Exception("Action type cannot be 'Object' when dispatching a typed action where the full name of the action is needed, Consider using 'DispatchPlainObject'");
+
+
             Script.Write("action = JSON.parse(JSON.stringify(action))");
             action["type"] = typeof(U).FullName;
             Script.Write("store.dispatch(action)");

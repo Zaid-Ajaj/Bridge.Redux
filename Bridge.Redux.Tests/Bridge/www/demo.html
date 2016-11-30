@@ -12,6 +12,37 @@
     <script src="../output/bridge.min.js"></script>
     <script src="../output/bridge.redux.js"></script>
     <script src="../output/bridge.redux.tests.js"></script>
+
+    <style>
+        #qunit-tests li { 
+            margin:10px 0px 10px 0;
+            padding:15px;
+        }
+
+        .module-name { 
+            color: green;
+        }
+
+        span.passed { 
+            background-color:green;
+            color:white;
+            font-size:18px;
+            border-radius:5px;
+            padding:0 10px 0 10px;
+            font-weight:bold;
+            margin-top:15px;
+        }
+
+        span.failed { 
+            background-color:darkred;
+            color:white;
+            font-size:18px;
+            border-radius:5px;
+            padding:0 10px 0 10px;
+            font-weight:bold;
+            margin-top:15px;
+        }
+    </style>
 </head>
 <body>
     <div id='qunit'></div>

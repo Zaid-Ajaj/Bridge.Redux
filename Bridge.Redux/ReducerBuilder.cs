@@ -22,12 +22,16 @@ namespace Bridge.Redux
 
         public ReducerBuilder<TState> WhenActionHasType<TAction>(Func<TState, TAction, TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+            if (typeof(TAction).FullName == "Object") throw new Exception("TAction cannot be 'Object' choose a proper type this action");
             reducersDict.Add(typeof(TAction).FullName, reducer);
             return this;
         }
 
         public ReducerBuilder<TState> WhenStateIsUndefinedOrNull(Func<TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+
             Func<TState, object, TState> actualReducer = (state, action) => reducer();
             if (!reducersDict.ContainsKey(undefinedStateTypeName))
             {
@@ -50,6 +54,8 @@ namespace Bridge.Redux
 
         public ReducerBuilder<TState> WhenActionHasType<TAction>(Func<TState, TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+            if (typeof(TAction).FullName == "Object") throw new Exception("TAction cannot be 'Object' choose a proper type this action");
             Func<TState, TAction, TState> actualReducer = (state, action) => reducer(state);
 
             reducersDict.Add(typeof(TAction).FullName, actualReducer);
@@ -59,6 +65,8 @@ namespace Bridge.Redux
 
         public ReducerBuilder<TState> WhenActionIsUnknown(Func<TState, TState> reducer)
         {
+            if (reducer == null) throw new ArgumentNullException(nameof(reducer));
+
             // forget about the second argument
             Func<TState, object, TState> actualReducer = (state, action) => reducer(state);
             if (!reducersDict.ContainsKey(unknownActionTypeName))

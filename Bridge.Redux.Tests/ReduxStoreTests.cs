@@ -1,6 +1,8 @@
 ﻿namespace Bridge.Redux.Tests
 {
     using QUnit;
+    using System;
+
     public static class ReduxStoreTests
     {
         public static void Run()
@@ -32,6 +34,20 @@
                 store.Dispatch(new IncrementBy { Value = 15 });
                 var result = store.GetState();
                 assert.Equal(result.Count, 16);
+            });
+
+            QUnit.Test("Dispatch() throws Exception when action is of type Object)", assert =>
+            {
+                try
+                {
+                    var action = Script.Write<object>("{}");
+                    store.Dispatch(action);
+                }
+                catch (Exception ex)
+                {
+                    assert.Equal(ex.IsUndefined(), false);
+                    assert.Equal(string.IsNullOrWhiteSpace(ex.Message), false);
+                }
             });
 
             QUnit.Test("Subscribe() works", assert =>
