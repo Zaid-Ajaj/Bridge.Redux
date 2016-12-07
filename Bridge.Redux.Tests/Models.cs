@@ -3,6 +3,7 @@
 namespace Bridge.Redux.Tests
 {
     public class Increment { };
+    [ObjectLiteral]
     public class IncrementBy { public int Value; }
     public class Decrement { };
     public class UnknownAction { }
@@ -13,6 +14,7 @@ namespace Bridge.Redux.Tests
     [ObjectLiteral]
     public class Counter { public int Count { get; set; } }
     public enum Gender { Male, Female }
+    
     [ObjectLiteral]
     public class CompoundState
     {

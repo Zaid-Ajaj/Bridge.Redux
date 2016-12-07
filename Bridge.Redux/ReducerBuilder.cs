@@ -46,16 +46,10 @@ namespace Bridge.Redux
             return this;
         }
 
-
-        bool IsUndefined<T>(T value)
-        {
-            return Script.Write<bool>("value === undefined");
-        }
-
         public ReducerBuilder<TState> WhenActionHasType<TAction>(Func<TState, TState> reducer)
         {
             if (reducer == null) throw new ArgumentNullException(nameof(reducer));
-            if (typeof(TAction).FullName == "Object") throw new Exception("TAction cannot be 'Object' choose a proper type this action");
+            if (typeof(TAction).FullName == "Object") throw new Exception("TAction cannot be 'Object' choose a proper type this action, ");
             Func<TState, TAction, TState> actualReducer = (state, action) => reducer(state);
 
             reducersDict.Add(typeof(TAction).FullName, actualReducer);
@@ -87,7 +81,7 @@ namespace Bridge.Redux
         {
             Func<TState, object, TState> pureReducer = (state, action) =>
             {
-                if (reducersDict.ContainsKey(undefinedStateTypeName) && (IsUndefined(state) || state == null))
+                if (reducersDict.ContainsKey(undefinedStateTypeName) && (!Script.IsDefined(state) || state == null))
                 {
                     var func = (Func<TState, object, TState>)reducersDict[undefinedStateTypeName];
                     return func(state, action);
