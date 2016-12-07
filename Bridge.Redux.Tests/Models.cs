@@ -1,4 +1,6 @@
-﻿namespace Bridge.Redux.Tests
+﻿using System;
+
+namespace Bridge.Redux.Tests
 {
     public class Increment { };
     public class IncrementBy { public int Value; }
@@ -18,5 +20,13 @@
         public int Age { get; set; }
         public Gender Gender { get; set; }
     }
+
+    
+
+    
+
+   
+
+    
 
 }
