@@ -23,6 +23,9 @@ namespace Redux
             Script.Write("store.dispatch(action)");
         }
 
+
+
+
         public static TState Apply<TState, TAction>(this ReduxReducer<TState> reducer, TState state, TAction action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));
@@ -297,9 +300,9 @@ namespace Redux
         public extern void Subscribe(Action action);
 
         [Name("dispatch")]
-        public extern void Dispatch<T>(Action<Action<T>> dispatch);
+        public extern void ThunkDispatch(Action<Action<object>> dispatch);
 
         [Name("dispatch")]
-        public extern void Dispatch<T>(Action<Action<T>, Func<TState>> dipatch);
+        public extern void ThunkDispatch(Action<Action<object>, Func<TState>> dipatch);
     }
 }

@@ -17,6 +17,9 @@ namespace Bridge.Redux
             Script.Write("store.dispatch(action)");
         }
 
+
+
+
         public static TState Apply<TState, TAction>(this ReduxReducer<TState> reducer, TState state, TAction action)
         {
             if (action == null) throw new ArgumentNullException(nameof(action));

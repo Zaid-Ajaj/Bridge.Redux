@@ -30,7 +30,7 @@
             QUnit.Test("Dispatching action after a timeout (async) works", assert =>
             {
                 var done = assert.Async();
-                store.Dispatch<IncrementBy>(dispatch =>
+                store.ThunkDispatch(dispatch =>
                 {
                     Window.SetTimeout(() =>
                     {

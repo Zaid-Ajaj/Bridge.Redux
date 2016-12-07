@@ -12,9 +12,9 @@ namespace Bridge.Redux
         public extern void Subscribe(Action action);
 
         [Name("dispatch")]
-        public extern void Dispatch<T>(Action<Action<T>> dispatch);
+        public extern void ThunkDispatch(Action<Action<object>> dispatch);
 
         [Name("dispatch")]
-        public extern void Dispatch<T>(Action<Action<T>, Func<TState>> dipatch);
+        public extern void ThunkDispatch(Action<Action<object>, Func<TState>> dipatch);
     }
 }
