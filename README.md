@@ -9,10 +9,8 @@ Bindings of the Redux library for the Bridge transpiler. It provides a type-safe
 # Installation
 The easy and convenient way in to copy and paste the contents of [Generated.Redux.cs](https://github.com/Zaid-Ajaj/Bridge.Redux/blob/master/Bridge.Redux/Generated.Redux.cs) in your project as a source file depecndency so you can tweak it however you like with no binary dependencies. 
 
-The Other way is to install it from nuget:
-```
-Install-Package Bridge.Redux
-````
+The Other way is to install it from [nuget](https://www.nuget.org/packages/Bridge.Redux/), download the latest prelease version (the one with "CI-{version}" tag)
+
 # Usage 
 First define your state object, in our case it is a simple counter
 ```csharp
