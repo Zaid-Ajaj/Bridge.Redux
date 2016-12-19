@@ -68,7 +68,7 @@
             {
                 try
                 {
-                    Func<int, int> nullReducer = null;
+                    Func<int, int> nullReducer =  null;
                     BuildReducer
                         .For<int>()
                         .WhenActionHasType<Increment>(incrCounter)
