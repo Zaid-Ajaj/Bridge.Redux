@@ -58,6 +58,10 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Javascript\Redux.3.6.0.js" />
+    <Content Include="Javascript\Redux.3.6.0.min.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Bridge.Min.15.5.0\build\Bridge.Min.targets" Condition="Exists('..\packages\Bridge.Min.15.5.0\build\Bridge.Min.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

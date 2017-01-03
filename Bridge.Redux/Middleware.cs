@@ -10,6 +10,7 @@ namespace Bridge.Redux
         public T StateAfter { get; set; }
         public object ActionDispatched { get; set; }
     }
+
     public class ReduxMiddleware
     {
         public static ReduxMiddleware From<TState>(Action<Store<TState>, dynamic, dynamic> func)
